@@ -6,23 +6,27 @@ Move JavaScript files with import syntax
 - Fixes imports on those files referencing the file being moved/renamed
 - Fixes renames variables referencing the import if the filename was changed
 
-### Installation
+## Installation
 
-`npm install -g jscodeshift`
-`cd path/to/project`
-`npm install eslint --save-dev`
-`npm install refactoring-codemods --save-dev`
-`cp path/to/js-mv .`
-`chmod 755 js-mv`
+```
+npm install -g jscodeshift
+cd path/to/project
+npm install eslint --save-dev
+npm install refactoring-codemods --save-dev
+cp path/to/js-mv .
+chmod 755 js-mv
+```
 
-### Usage
+## Usage
 
-`cd path/to/project`
-`./js-mv someFolder/someFile.js anotherFolder/anotherFile.js`
+```
+cd path/to/project
+./js-mv someFolder/someFile.js anotherFolder/anotherFile.js
+```
 
 Already moved the file? That's ok. Just specify the old path and the new path as you normally would.
 
-### Caveats
+## Caveats
 
 - assumes camelCase files/directories
 - Cannot move/rename folders at this time.
