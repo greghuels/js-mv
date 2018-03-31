@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == "" || "$2" == "" ]]; then
+  echo "usage: js-mv source target"
+  exit 1
+fi
+
+sourceDirname=$(dirname $1)
+targetDirname=$(dirname $2)
+
+sourceBasename=$(basename $1)
+targetBasename=$(basename $2)
+
+sourceSpecifier=${sourceBasename%.*}
+targetSpecifier=${targetBasename%.*}
+
+sourcePath=$(pwd)/$sourceDirname/$sourceBasename
+targetPath=$(pwd)/$targetDirname/$targetBasename
+
+if [ -e $1 ]; then
+  mv $1 $2 || exit 1
+fi
+
+jscodeshift \
+  --ignore-pattern=node_modules \
+  -t ./node_modules/refactoring-codemods/lib/transformers/import-declaration-transform.js . \
+  --prevFilePath=$sourcePath \
+  --nextFilePath=$targetPath
+
+if [[ "$sourceDirname" != "$targetDirname" ]]; then
+  jscodeshift \
+    --ignore-pattern=node_modules \
+    -t ./node_modules/refactoring-codemods/lib/transformers/import-relative-transform.js $2 \
+    --prevFilePath=$sourcePath \
+    --nextFilePath=$targetPath
+fi
+
+if [[ "$sourceBasename" != "$targetBasename" ]]; then
+  jscodeshift \
+    --ignore-pattern=node_modules \
+    -t ./node_modules/refactoring-codemods/lib/transformers/import-specifier-transform.js . \
+    --prevSpecifier=$sourceSpecifier \
+    --nextSpecifier=$targetSpecifier \
+    --declarationFilePath=$targetPath
+fi
+
+echo "eslint fix..."
+./node_modules/.bin/eslint . --ext=.js,.jsx --ignore-path=.gitignore --fix
+echo "done."
