@@ -28,6 +28,7 @@ Already moved the file? That's ok. Just specify the old path and the new path as
 
 ## Caveats
 
+- must run from root of project
 - assumes camelCase files/directories
 - Cannot move/rename folders at this time.
 - Must specify full target file. (`./js-mv someFolder/someFile.js anotherFolder/`) won't work at this time.
