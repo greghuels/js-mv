@@ -11,7 +11,6 @@ Move JavaScript files with import syntax
 ```
 npm install -g jscodeshift
 cd path/to/project
-npm install eslint --save-dev
 npm install refactoring-codemods --save-dev
 cp path/to/js-mv .
 chmod 755 js-mv

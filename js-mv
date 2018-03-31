@@ -44,6 +44,9 @@ if [[ "$sourceBasename" != "$targetBasename" ]]; then
     --declarationFilePath=$targetPath
 fi
 
-echo "eslint fix..."
-./node_modules/.bin/eslint . --ext=.js,.jsx --ignore-path=.gitignore --fix
+if [ -e ./node_modules/.bin/eslint ]; then
+  echo "eslint fix..."
+  ./node_modules/.bin/eslint . --ext=.js,.jsx --ignore-path=.gitignore --fix
+fi
+  
 echo "done."
